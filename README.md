@@ -127,7 +127,7 @@ O sistema implementa o padrão SAGA para coordenar transações que envolvem mú
 
 ### Diagrama de Arquitetura
 
-<img align="center" src="https://github.com/CarlosLopes88/tech_challenge_4_fase/blob/main/Arquitetura.png">
+<img align="center" src="https://github.com/CarlosLopes88/07_Hakaton_app_concessionaria/Diagrama hakaton 2.png">
 
 ## Automação de Deploys
 
@@ -165,10 +165,11 @@ cd microservice_venda
 docker build -t microservice_venda:latest .
 docker run -d --name mongodb-venda --network app-network -e MONGO_INITDB_ROOT_USERNAME=docdb_admin -e MONGO_INITDB_ROOT_PASSWORD=docdb_admin_password -e MONGO_INITDB_DATABASE=vendasdb -p 27019:27017 mongo:latest
 docker run -d --name microservice_venda --network app-network -p 3003:3003 microservice_venda:latest
-
+```
 
 ### Usando Kubernetes (Desenvolvimento Local)
 
+```bash
 # Criar namespaces
 kubectl create namespace microservice-cliente
 kubectl create namespace microservice-produto
@@ -194,95 +195,90 @@ kubectl apply -f k8s/vendamongodbdeployservice.yaml
 kubectl apply -f k8s/vendadeployment.yaml
 kubectl apply -f k8s/vendadeploymentservice.yaml
 kubectl apply -f k8s/vendahpa.yaml
+```
 
-Documentação das APIs
-Microserviço de Clientes (porta 3001)
+## Documentação das APIs
 
-POST /api/cliente: Criar/registrar cliente
-GET /api/cliente/: Buscar cliente por ID
-GET /api/cliente: Listar todos os clientes
+### Microserviço de Clientes (porta 3001)
+- **POST /api/cliente**: Criar/registrar cliente
+- **GET /api/cliente/:clienteId**: Buscar cliente por ID
+- **GET /api/cliente**: Listar todos os clientes
 
-Microserviço de Produtos (porta 3002)
+### Microserviço de Produtos (porta 3002)
+- **POST /api/produto**: Cadastrar veículo
+- **GET /api/produto**: Listar veículos
+- **GET /api/produto/:produtoId**: Buscar veículo por ID
+- **GET /api/produto/marca/:marca**: Buscar por marca
+- **GET /api/produto/modelo/:modelo**: Buscar por modelo
+- **GET /api/produto/ano/:ano**: Buscar por ano
+- **GET /api/produto/placa/:placa**: Buscar por placa
+- **GET /api/produto/cor/:cor**: Buscar por cor
+- **PUT /api/produto/:produtoId**: Atualizar veículo
+- **DELETE /api/produto/:produtoId**: Excluir veículo
 
-POST /api/produto: Cadastrar veículo
-GET /api/produto: Listar veículos
-GET /api/produto/: Buscar veículo por ID
-GET /api/produto/marca/: Buscar por marca
-GET /api/produto/modelo/: Buscar por modelo
-GET /api/produto/ano/: Buscar por ano
-GET /api/produto/placa/: Buscar por placa
-GET /api/produto/cor/: Buscar por cor
-PUT /api/produto/: Atualizar veículo
-DELETE /api/produto/: Excluir veículo
+### Microserviço de Vendas (porta 3003)
+- **POST /api/pedido**: Criar pedido
+- **GET /api/pedido**: Listar pedidos
+- **GET /api/pedido/:pedidoId**: Buscar pedido por ID
+- **GET /api/pedido/ativos**: Listar pedidos ativos
+- **GET /api/pedido/status/:status**: Buscar por status
+- **GET /api/pedido/cliente/:clienteId**: Buscar por cliente
+- **PUT /api/pedido/:pedidoId/status**: Atualizar status
+- **POST /api/pagamento/:pedidoId**: Criar pagamento
+- **GET /api/pagamento/:pedidoId**: Consultar pagamento
+- **POST /api/webhook/pagseguro**: Webhook para PagSeguro
+- **POST /api/webhook/simulacao/:pedidoId/:status**: Simulação de pagamento
 
-Microserviço de Vendas (porta 3003)
+## SECRETS a serem criadas para CI/CD:
 
-POST /api/pedido: Criar pedido
-GET /api/pedido: Listar pedidos
-GET /api/pedido/: Buscar pedido por ID
-GET /api/pedido/ativos: Listar pedidos ativos
-GET /api/pedido/status/: Buscar por status
-GET /api/pedido/cliente/: Buscar por cliente
-PUT /api/pedido//status: Atualizar status
-POST /api/pagamento/: Criar pagamento
-GET /api/pagamento/: Consultar pagamento
-POST /api/webhook/pagseguro: Webhook para PagSeguro
-POST /api/webhook/simulacao//: Simulação de pagamento
+### 01_tcf4_infra_documentdb:
+- **`AWS_ACCESS_KEY_ID`**: Chave de acesso AWS.
+- **`AWS_SECRET_ACCESS_KEY`**: Chave secreta da AWS.
+- **`AWS_REGION`**: Região AWS (ex: `us-east-1`).
+- **`DB_MASTER_USERNAME`**: Nome de usuário do banco de dados DocumentDB.
+- **`DB_MASTER_PASSWORD`**: Senha do banco de dados DocumentDB.
+- **`DOCDB_USERNAME`**: Senha do banco de dados DocumentDB.
 
-SECRETS a serem criadas para CI/CD:
-01_tcf4_infra_documentdb:
+### 02_tcf4_infra_eks_cliente:
+- **`AWS_ACCESS_KEY_ID`**: Chave de acesso AWS.
+- **`AWS_SECRET_ACCESS_KEY`**: Chave secreta da AWS.
+- **`AWS_REGION`**: Região AWS (ex: `us-east-1`).
+- **`DB_MASTER_USERNAME`**: Nome de usuário do banco de dados DocumentDB.
+- **`DB_MASTER_PASSWORD`**: Senha do banco de dados DocumentDB.
+- **`DOCDB_USERNAME`**: Senha do banco de dados DocumentDB.
+- **`DOCDB_CLUSTER_ENDPOINT_CLI`**: Endpoint banco de dados cliente.
 
-AWS_ACCESS_KEY_ID: Chave de acesso AWS.
-AWS_SECRET_ACCESS_KEY: Chave secreta da AWS.
-AWS_REGION: Região AWS (ex: us-east-1).
-DB_MASTER_USERNAME: Nome de usuário do banco de dados DocumentDB.
-DB_MASTER_PASSWORD: Senha do banco de dados DocumentDB.
-DOCDB_USERNAME: Senha do banco de dados DocumentDB.
+### 03_tcf4_infra_eks_produto:
+- **`AWS_ACCESS_KEY_ID`**: Chave de acesso AWS.
+- **`AWS_SECRET_ACCESS_KEY`**: Chave secreta da AWS.
+- **`AWS_REGION`**: Região AWS (ex: `us-east-1`).
+- **`DB_MASTER_USERNAME`**: Nome de usuário do banco de dados DocumentDB.
+- **`DB_MASTER_PASSWORD`**: Senha do banco de dados DocumentDB.
+- **`DOCDB_USERNAME`**: Senha do banco de dados DocumentDB.
+- **`DOCDB_CLUSTER_ENDPOINT_PRO`**: Endpoint banco de dados produtos.
 
-02_tcf4_infra_eks_cliente:
+### 04_tcf4_infra_eks_pedidopgto:
+- **`AWS_ACCESS_KEY_ID`**: Chave de acesso AWS.
+- **`AWS_SECRET_ACCESS_KEY`**: Chave secreta da AWS.
+- **`AWS_REGION`**: Região AWS (ex: `us-east-1`).
+- **`DB_MASTER_USERNAME`**: Nome de usuário do banco de dados DocumentDB.
+- **`DB_MASTER_PASSWORD`**: Senha do banco de dados DocumentDB.
+- **`DOCDB_USERNAME`**: Senha do banco de dados DocumentDB.
+- **`DOCDB_CLUSTER_ENDPOINT_CLI`**: Endpoint banco de dados cliente.
+- **`DOCDB_CLUSTER_ENDPOINT_PRO`**: Endpoint banco de dados produtos.
+- **`DOCDB_CLUSTER_ENDPOINT_PED`**: Endpoint banco de dados pedidos e pagamento.
+- **`PAGSEGURO_TOKEN`**: Token para integração do pagseguro.
 
-AWS_ACCESS_KEY_ID: Chave de acesso AWS.
-AWS_SECRET_ACCESS_KEY: Chave secreta da AWS.
-AWS_REGION: Região AWS (ex: us-east-1).
-DB_MASTER_USERNAME: Nome de usuário do banco de dados DocumentDB.
-DB_MASTER_PASSWORD: Senha do banco de dados DocumentDB.
-DOCDB_USERNAME: Senha do banco de dados DocumentDB.
-DOCDB_CLUSTER_ENDPOINT_CLI: Endpoint banco de dados cliente.
+### 05_tcf4_infra_cognito:
+- **`AWS_ACCESS_KEY_ID`**: Chave de acesso AWS.
+- **`AWS_SECRET_ACCESS_KEY`**: Chave secreta da AWS.
+- **`AWS_REGION`**: Região AWS (ex: `us-east-1`).
 
-03_tcf4_infra_eks_produto:
-
-AWS_ACCESS_KEY_ID: Chave de acesso AWS.
-AWS_SECRET_ACCESS_KEY: Chave secreta da AWS.
-AWS_REGION: Região AWS (ex: us-east-1).
-DB_MASTER_USERNAME: Nome de usuário do banco de dados DocumentDB.
-DB_MASTER_PASSWORD: Senha do banco de dados DocumentDB.
-DOCDB_USERNAME: Senha do banco de dados DocumentDB.
-DOCDB_CLUSTER_ENDPOINT_PRO: Endpoint banco de dados produtos.
-
-04_tcf4_infra_eks_pedidopgto:
-
-AWS_ACCESS_KEY_ID: Chave de acesso AWS.
-AWS_SECRET_ACCESS_KEY: Chave secreta da AWS.
-AWS_REGION: Região AWS (ex: us-east-1).
-DB_MASTER_USERNAME: Nome de usuário do banco de dados DocumentDB.
-DB_MASTER_PASSWORD: Senha do banco de dados DocumentDB.
-DOCDB_USERNAME: Senha do banco de dados DocumentDB.
-DOCDB_CLUSTER_ENDPOINT_CLI: Endpoint banco de dados cliente.
-DOCDB_CLUSTER_ENDPOINT_PRO: Endpoint banco de dados produtos.
-DOCDB_CLUSTER_ENDPOINT_PED: Endpoint banco de dados pedidos e pagamento.
-PAGSEGURO_TOKEN: Token para integração do pagseguro.
-
-05_tcf4_infra_cognito:
-
-AWS_ACCESS_KEY_ID: Chave de acesso AWS.
-AWS_SECRET_ACCESS_KEY: Chave secreta da AWS.
-AWS_REGION: Região AWS (ex: us-east-1).
-
-06_tcf4_infra_apigateway:
-
-AWS_ACCESS_KEY_ID: Chave de acesso AWS.
-AWS_SECRET_ACCESS_KEY: Chave secreta da AWS.
-AWS_REGION: Região AWS (ex: us-east-1).
-URL_LB_CL: Endpoint loadbalancer eks cliente.
-URL_LB_PRO: Endpoint loadbalancer eks produtos.
-URL_LB_PED: Endpoint loadbalancer eks pedido pagamento.
+### 06_tcf4_infra_apigateway:
+- **`AWS_ACCESS_KEY_ID`**: Chave de acesso AWS.
+- **`AWS_SECRET_ACCESS_KEY`**: Chave secreta da AWS.
+- **`AWS_REGION`**: Região AWS (ex: `us-east-1`).
+- **`URL_LB_CL`**: Endpoint loadbalancer eks cliente.
+- **`URL_LB_PRO`**: Endpoint loadbalancer eks produtos.
+- **`URL_LB_PED`**: Endpoint loadbalancer eks pedido pagamento.
+- **`COGNITO`**: Endpoint do cognito user pool arn.
