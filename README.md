@@ -10,13 +10,13 @@ O sistema é composto por três microserviços (Clientes, Produtos e Vendas) imp
 
 Você pode acessar os repositórios do projeto nos seguintes links:
 
-- **Infraestrutura do banco de dados (DocumentDB)**: [01_tcf4_infra_documentdb](https://github.com/CarlosLopes88/01_infra_documentdb)
-- **Infraestrutura do Kubernetes (EKS - Cliente)**: [02_tcf4_infra_eks_cliente](https://github.com/CarlosLopes88/02_infra_eks_cliente)
-- **Infraestrutura do Kubernetes (EKS - Produto)**: [03_tcf4_infra_eks_produto](https://github.com/CarlosLopes88/03_infra_eks_produto)
-- **Infraestrutura do Kubernetes (EKS - Venda)**: [04_tcf4_infra_eks_venda](https://github.com/CarlosLopes88/04_infra_eks_pedidopgto)
-- **Cognito (JWT)**: [05_tcf4_infra_cognito](https://github.com/CarlosLopes88/05_infra_cognito)
-- **API Gateway**: [06_tcf4_infra_apigateway](https://github.com/CarlosLopes88/06_infra_apigateway)
-- **App concessionária**: [07_app_concessionaria](https://github.com/CarlosLopes88/07)
+- **Infraestrutura do banco de dados (DocumentDB)**: [01_documentdb](https://github.com/CarlosLopes88/01_infra_docdb)
+- **Infraestrutura do Kubernetes (EKS - Cliente)**: [02_eks_cliente](https://github.com/CarlosLopes88/02_eks_cliente)
+- **Infraestrutura do Kubernetes (EKS - Produto)**: [03_eks_produto](https://github.com/CarlosLopes88/03_eks_produto)
+- **Infraestrutura do Kubernetes (EKS - Venda)**: [04_eks_venda](https://github.com/CarlosLopes88/02_eks_venda)
+- **Cognito (JWT)**: [05_cognito](https://github.com/CarlosLopes88/05_cognito)
+- **API Gateway**: [06_Api_gateway](https://github.com/CarlosLopes88/06_Api_gateway)
+- **App concessionária**: [07_Hakaton_app_concessionaria](https://github.com/CarlosLopes88/07_Hakaton_app_concessionaria)
 
 ## Tecnologias Envolvidas
 
