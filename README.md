@@ -127,7 +127,7 @@ O sistema implementa o padrão SAGA para coordenar transações que envolvem mú
 
 ### Diagrama de Arquitetura
 
-<img align="center" src="https://github.com/CarlosLopes88/07_Hakaton_app_concessionaria/Diagrama_hakaton_2.png">
+<img align="center" src="https://github.com/CarlosLopes88/07_Hakaton_app_concessionaria/blob/4079c7f66adeecb954df854e47f8edb33e5426eb/Diagrama_hakaton_2.png">
 
 ## Automação de Deploys
 
