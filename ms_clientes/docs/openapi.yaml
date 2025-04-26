@@ -1,0 +1,95 @@
+openapi: 3.1.0
+info:
+  title: Cadastro de Clientes API
+  description: API para gerenciamento de clientes.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3001
+
+paths:
+  /api/cliente:
+    post:
+      summary: Cria um novo cliente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cliente'
+            example:
+              cpf: "123.456.789-09"
+              nomeCliente: "Cogumelo Silva"
+              email: "Cogumelo.silva@example.com"
+      responses:
+        '201':
+          description: Cliente criado com sucesso
+        '500':
+          description: Erro no servidor
+    get:
+      summary: Retorna todos os clientes
+      responses:
+        '200':
+          description: Lista de clientes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cliente'
+              example:
+                - clienteId: "12345"
+                  cpf: "123.456.789-09"
+                  nomeCliente: "Cogumelo Silva"
+                  email: "Cogumelo.silva@example.com"
+                  registrado: true
+                  dataRegistro: "2023-05-01T12:00:00Z"
+        '404':
+          description: Nenhum cliente encontrado
+
+  /api/cliente/{clienteId}:
+    get:
+      summary: Retorna um cliente pelo ID
+      parameters:
+        - in: path
+          name: clienteId
+          schema:
+            type: string
+          required: true
+          description: ID do cliente
+      responses:
+        '200':
+          description: Cliente encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cliente'
+              example:
+                clienteId: "12345"
+                cpf: "123.456.789-09"
+                nomeCliente: "Cogumelo Silva"
+                email: "Cogumelo.silva@example.com"
+                registrado: true
+                dataRegistro: "2023-05-01T12:00:00Z"
+        '404':
+          description: Cliente não encontrado
+        '500':
+          description: Erro no servidor
+
+components:
+  schemas:
+    Cliente:
+      type: object
+      properties:
+        clienteId:
+          type: string
+        cpf:
+          type: string
+        nomeCliente:
+          type: string
+        email:
+          type: string
+        registrado:
+          type: boolean
+        dataRegistro:
+          type: string
+          format: date-time

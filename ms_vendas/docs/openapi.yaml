@@ -1,0 +1,617 @@
+openapi: 3.1.0
+info:
+  title: API de Concessionária de Veículos
+  description: API para gerenciamento de compra e venda de veículos em uma concessionária.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3003
+
+paths:
+  /api/pedido:
+    get:
+      summary: Retorna todos os pedidos
+      responses:
+        '200':
+          description: Lista de pedidos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pedido'
+        '404':
+          description: Nenhum pedido encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Nenhum pedido encontrado."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Cria um novo pedido de compra de veículo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cliente:
+                  type: string
+                  description: ID do cliente
+                veiculoId:
+                  type: string
+                  description: ID do veículo a ser comprado
+              required:
+                - cliente
+                - veiculoId
+            example:
+              cliente: "kqsqjovho"
+              veiculoId: "otygnGqMO"
+      responses:
+        '201':
+          description: Pedido criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Pedido criado com sucesso. Veículo reservado."
+                  pedido:
+                    $ref: '#/components/schemas/Pedido'
+        '400':
+          description: Dados inválidos ou veículo indisponível
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Dados inválidos. cliente e veiculoId são obrigatórios"
+        '404':
+          description: Cliente ou veículo não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cliente não encontrado"
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/pedido/{pedidoId}:
+    get:
+      summary: Retorna um pedido pelo ID
+      parameters:
+        - in: path
+          name: pedidoId
+          schema:
+            type: string
+          required: true
+          description: ID do pedido
+      responses:
+        '200':
+          description: Pedido encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pedido'
+        '404':
+          description: Pedido não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Pedido não encontrado."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/pedido/{pedidoId}/status:
+    put:
+      summary: Atualiza o status de um pedido
+      parameters:
+        - in: path
+          name: pedidoId
+          schema:
+            type: string
+          required: true
+          description: ID do pedido
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                novoStatus:
+                  type: string
+                  enum: 
+                    - EmProcessamento
+                    - Reservado
+                    - PagamentoEmProcessamento
+                    - PagamentoAprovado
+                    - Finalizado
+                    - Cancelado
+                  description: Novo status do pedido
+              required:
+                - novoStatus
+            example:
+              novoStatus: "Finalizado"
+      responses:
+        '200':
+          description: Status do pedido atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Status do pedido atualizado para 'Finalizado'"
+                  pedido:
+                    $ref: '#/components/schemas/Pedido'
+        '400':
+          description: Dados inválidos ou status inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Status inválido. Valores permitidos: EmProcessamento, Reservado, PagamentoEmProcessamento, PagamentoAprovado, Finalizado, Cancelado"
+        '404':
+          description: Pedido não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Pedido não encontrado."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/pedido/ativos:
+    get:
+      summary: Retorna pedidos ativos (não finalizados, não cancelados)
+      responses:
+        '200':
+          description: Lista de pedidos ativos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pedido'
+        '404':
+          description: Nenhum pedido ativo encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Nenhum pedido ativo encontrado."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/pedido/status/{status}:
+    get:
+      summary: Retorna pedidos por status
+      parameters:
+        - in: path
+          name: status
+          schema:
+            type: string
+          required: true
+          description: Status do pedido
+      responses:
+        '200':
+          description: Lista de pedidos com o status especificado
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pedido'
+        '404':
+          description: Nenhum pedido encontrado com o status especificado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Nenhum pedido com status 'Reservado' encontrado."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/pedido/cliente/{clienteId}:
+    get:
+      summary: Retorna pedidos por cliente
+      parameters:
+        - in: path
+          name: clienteId
+          schema:
+            type: string
+          required: true
+          description: ID do cliente
+      responses:
+        '200':
+          description: Lista de pedidos do cliente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pedido'
+        '404':
+          description: Nenhum pedido encontrado para o cliente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Nenhum pedido encontrado para o cliente kqsqjovho."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/pagamento/{pedidoId}:
+    post:
+      summary: Cria um pagamento para um pedido
+      parameters:
+        - in: path
+          name: pedidoId
+          schema:
+            type: string
+          required: true
+          description: ID do pedido
+      responses:
+        '201':
+          description: Pagamento criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Pagamento criado com sucesso"
+                  pagamento:
+                    $ref: '#/components/schemas/Pagamento'
+        '400':
+          description: Pedido não está no status correto para pagamento
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Pedido não está no status correto para pagamento"
+                  error:
+                    type: string
+        '404':
+          description: Pedido ou cliente não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Pedido não encontrado"
+                  error:
+                    type: string
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erro interno no servidor"
+                  error:
+                    type: string
+    get:
+      summary: Consulta o status de pagamento de um pedido
+      parameters:
+        - in: path
+          name: pedidoId
+          schema:
+            type: string
+          required: true
+          description: ID do pedido
+      responses:
+        '200':
+          description: Status de pagamento do pedido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pedidoId:
+                    type: string
+                  statusPagamento:
+                    type: string
+                  total:
+                    type: number
+                  veiculo:
+                    type: object
+                    properties:
+                      marca:
+                        type: string
+                      modelo:
+                        type: string
+                      ano:
+                        type: number
+                      placa:
+                        type: string
+        '404':
+          description: Pedido não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Pedido não encontrado"
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  error:
+                    type: string
+
+  /api/webhook/pagseguro:
+    post:
+      summary: Webhook para receber notificações do PagSeguro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  type: string
+                data:
+                  type: object
+                  properties:
+                    reference_id:
+                      type: string
+                    status:
+                      type: string
+                      enum:
+                        - PAID
+                        - DECLINED
+                        - CANCELED
+              required:
+                - event
+                - data
+            example:
+              event: "transaction"
+              data:
+                reference_id: "Nlm_wLPbU"
+                status: "PAID"
+      responses:
+        '200':
+          description: Notificação recebida e processada
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Notificação recebida e processada com sucesso"
+
+  /api/webhook/simulacao/{pedidoId}/{status}:
+    post:
+      summary: Endpoint para simular notificações de pagamento (para testes)
+      parameters:
+        - in: path
+          name: pedidoId
+          schema:
+            type: string
+          required: true
+          description: ID do pedido
+        - in: path
+          name: status
+          schema:
+            type: string
+            enum:
+              - Aprovado
+              - Recusado
+              - Cancelado
+          required: true
+          description: Status de pagamento a ser simulado
+      responses:
+        '200':
+          description: Simulação de pagamento processada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Simulação de pagamento Aprovado processada com sucesso"
+                  pedido:
+                    $ref: '#/components/schemas/Pedido'
+        '400':
+          description: Status inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Status inválido. Use 'Aprovado', 'Recusado' ou 'Cancelado'."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Pedido:
+      type: object
+      properties:
+        pedidoId:
+          type: string
+          example: "Nlm_wLPbU"
+        cliente:
+          type: string
+          example: "kqsqjovho"
+        veiculo:
+          type: object
+          properties:
+            veiculoId:
+              type: string
+              example: "otygnGqMO"
+            modelo:
+              type: string
+              example: "Civic"
+            marca:
+              type: string
+              example: "Honda"
+            ano:
+              type: number
+              example: 2023
+            preco:
+              type: number
+              example: 110000
+            placa:
+              type: string
+              example: "XYZ5678"
+        total:
+          type: number
+          example: 110000
+        status:
+          type: string
+          enum:
+            - EmProcessamento
+            - Reservado
+            - PagamentoEmProcessamento
+            - PagamentoAprovado
+            - Finalizado
+            - Cancelado
+          example: "Reservado"
+        dataPedido:
+          type: string
+          format: date-time
+          example: "2025-04-19T22:01:21.776Z"
+        statusPagamento:
+          type: string
+          enum:
+            - Pendente
+            - EmProcessamento
+            - Aprovado
+            - Recusado
+            - Cancelado
+          example: "Pendente"
+        pagamentoId:
+          type: string
+          example: "PAYMENT-123456789"
+        historicoStatus:
+          type: array
+          items:
+            type: object
+            properties:
+              status:
+                type: string
+              data:
+                type: string
+                format: date-time
+          example:
+            - status: "EmProcessamento"
+              data: "2025-04-19T22:01:21.775Z"
+            - status: "Reservado"
+              data: "2025-04-19T22:01:21.775Z"
+
+    Pagamento:
+      type: object
+      properties:
+        pedidoId:
+          type: string
+          example: "Nlm_wLPbU"
+        valor:
+          type: number
+          example: 110000
+        status:
+          type: string
+          enum:
+            - Pendente
+            - EmProcessamento
+            - Aprovado
+            - Recusado
+            - Cancelado
+          example: "EmProcessamento"
+        qrCodeLink:
+          type: string
+          example: "http://qrcode.test/image.png"
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro no servidor"
+        error:
+          type: string
+          example: "Erro interno no servidor"

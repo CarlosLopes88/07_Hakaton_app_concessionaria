@@ -1,0 +1,495 @@
+openapi: 3.1.0
+info:
+  title: API de Produtos - Concessionária de Veículos
+  description: API para gerenciamento de produtos (veículos) no sistema de concessionária.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3002
+
+paths:
+  /api/produto:
+    get:
+      summary: Retorna todos os veículos
+      responses:
+        '200':
+          description: Lista de veículos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Produto'
+        '404':
+          description: Nenhum veículo encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Nenhum veículo encontrado."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Cadastra um novo veículo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/ProdutoInput'
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/ProdutoInput'
+            example:
+              marca: "Toyota"
+              modelo: "Corolla"
+              ano: "2023"
+              cor: "Prata"
+              placa: "ABC1234"
+              preco: 120000.00
+      responses:
+        '201':
+          description: Veículo cadastrado com sucesso
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Produto'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/Produto'
+        '400':
+          description: Dados inválidos ou veículo duplicado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Dados inválidos"
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - "Marca do produto é obrigatória"
+                      - "Preço do produto deve ser maior que zero"
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/produto/{produtoId}:
+    get:
+      summary: Retorna um veículo pelo ID
+      parameters:
+        - in: path
+          name: produtoId
+          schema:
+            type: string
+          required: true
+          description: ID do veículo
+      responses:
+        '200':
+          description: Veículo encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produto'
+        '404':
+          description: Veículo não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Veículo não encontrado."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Atualiza um veículo pelo ID
+      parameters:
+        - in: path
+          name: produtoId
+          schema:
+            type: string
+          required: true
+          description: ID do veículo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                marca:
+                  type: string
+                modelo:
+                  type: string
+                ano:
+                  type: string
+                cor:
+                  type: string
+                placa:
+                  type: string
+                preco:
+                  type: number
+                status:
+                  type: string
+                  enum: ['reservado', 'Disponivel']
+                reserva:
+                  type: object
+                  properties:
+                    clienteId:
+                      type: string
+                    dataReserva:
+                      type: string
+                      format: date-time
+            example:
+              cor: "Branco"
+              preco: 125000.00
+              status: "Reservado"
+              reserva:
+                clienteId: "cliente123"
+                dataReserva: "2025-04-20T12:30:45.000Z"
+      responses:
+        '200':
+          description: Veículo atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produto'
+        '404':
+          description: Veículo não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Veículo não encontrado."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Exclui um veículo pelo ID
+      parameters:
+        - in: path
+          name: produtoId
+          schema:
+            type: string
+          required: true
+          description: ID do veículo
+      responses:
+        '200':
+          description: Veículo excluído com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Veículo excluído com sucesso."
+        '404':
+          description: Veículo não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Veículo não encontrado."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/produto/marca/{marca}:
+    get:
+      summary: Retorna veículos por marca
+      parameters:
+        - in: path
+          name: marca
+          schema:
+            type: string
+          required: true
+          description: Marca do veículo
+      responses:
+        '200':
+          description: Lista de veículos da marca especificada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Produto'
+        '404':
+          description: Nenhum veículo encontrado da marca especificada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Nenhum veículo encontrado desta marca."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/produto/modelo/{modelo}:
+    get:
+      summary: Retorna veículos por modelo
+      parameters:
+        - in: path
+          name: modelo
+          schema:
+            type: string
+          required: true
+          description: Modelo do veículo
+      responses:
+        '200':
+          description: Lista de veículos do modelo especificado
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Produto'
+        '404':
+          description: Nenhum veículo encontrado do modelo especificado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Nenhum veículo encontrado deste modelo."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/produto/ano/{ano}:
+    get:
+      summary: Retorna veículos por ano
+      parameters:
+        - in: path
+          name: ano
+          schema:
+            type: string
+          required: true
+          description: Ano do veículo
+      responses:
+        '200':
+          description: Lista de veículos do ano especificado
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Produto'
+        '404':
+          description: Nenhum veículo encontrado do ano especificado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Nenhum veículo encontrado deste ano."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/produto/placa/{placa}:
+    get:
+      summary: Retorna veículo por placa
+      parameters:
+        - in: path
+          name: placa
+          schema:
+            type: string
+          required: true
+          description: Placa do veículo
+      responses:
+        '200':
+          description: Veículo encontrado pela placa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produto'
+        '404':
+          description: Placa não encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Placa não encontrado."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/produto/cor/{cor}:
+    get:
+      summary: Retorna veículos por cor
+      parameters:
+        - in: path
+          name: cor
+          schema:
+            type: string
+          required: true
+          description: Cor do veículo
+      responses:
+        '200':
+          description: Lista de veículos da cor especificada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Produto'
+        '404':
+          description: Nenhum veículo encontrado da cor especificada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Nenhum veículo encontrado desta cor."
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    ProdutoInput:
+      type: object
+      required:
+        - marca
+        - modelo
+        - ano
+        - cor
+        - placa
+        - preco
+      properties:
+        marca:
+          type: string
+          example: "Toyota"
+        modelo:
+          type: string
+          example: "Corolla"
+        ano:
+          type: string
+          example: "2023"
+        cor:
+          type: string
+          example: "Prata"
+        placa:
+          type: string
+          example: "ABC1234"
+        preco:
+          type: number
+          example: 120000.00
+
+    Produto:
+      type: object
+      properties:
+        produtoId:
+          type: string
+          example: "JtibZU6QT"
+        marca:
+          type: string
+          example: "Toyota"
+        modelo:
+          type: string
+          example: "Corolla"
+        ano:
+          type: string
+          example: "2023"
+        cor:
+          type: string
+          example: "Prata"
+        placa:
+          type: string
+          example: "ABC1234"
+        preco:
+          type: number
+          example: 120000.00
+        status:
+          type: string
+          enum: ['reservado', 'Disponivel']
+          example: "Disponivel"
+        reserva:
+          type: object
+          properties:
+            clienteId:
+              type: string
+              nullable: true
+              example: null
+            dataReserva:
+              type: string
+              format: date-time
+              nullable: true
+              example: null
+        _id:
+          type: string
+          example: "68041c2bb17a10362a9423dd"
+        __v:
+          type: number
+          example: 0
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro no servidor"
+        error:
+          type: string
+          example: "Error message details"

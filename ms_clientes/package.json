@@ -1,0 +1,54 @@
+{
+  "name": "tech_challenge_5_fase",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node src/aplication/interfaces/web/server.js",
+    "test": "jest --coverage --forceExit --detectOpenHandles --runInBand --testTimeout=30000",
+    "test:watch": "jest --watchAll --forceExit"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/test/**/*Test.js"
+    ],
+    "collectCoverage": true,
+    "coverageDirectory": "./coverage",
+    "coverageReporters": ["text", "lcov"],
+    "coverageThreshold": {
+      "global": {
+        "statements": 70,
+        "branches": 70,
+        "functions": 70,
+        "lines": 70
+      }
+    },
+    "verbose": true
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.1",
+    "nodemon": "^3.1.4",
+    "shortid": "^2.2.16",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0",
+    "jest": "^29.6.2",
+    "supertest": "^6.3.3",
+    "uuid": "^9.0.0",
+    "crypto-js": "^4.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "description": ""
+}
