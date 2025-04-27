@@ -1,4 +1,4 @@
-# Tech Challenge - App Concessionária
+# Tech Challenge Fase 5 Hakaton - App Concessionária
 
 Este é um sistema de gerenciamento de pedidos para uma concessionária de veículos, desenvolvido como projeto de arquitetura de microserviços. 
 
