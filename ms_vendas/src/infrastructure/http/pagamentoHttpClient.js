@@ -16,7 +16,7 @@ class PagamentoHttpClient {
         const url = `${this.baseUrl}${endpoint}`;
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.token}`
+            'Authorization': this.token
         };
 
         let response;

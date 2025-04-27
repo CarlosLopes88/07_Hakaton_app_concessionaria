@@ -142,61 +142,6 @@ Cada repositório possui workflows YAML dedicados para automatizar o processo:
 
 ## Como Executar o Projeto
 
-### Usando Docker (Desenvolvimento Local)
-
-```bash
-# Criar rede para comunicação entre serviços
-docker network create app-network
-
-# Microserviço de Clientes
-cd microservice_cliente
-docker build -t microservice_cliente:latest .
-docker run -d --name mongodb-cliente --network app-network -e MONGO_INITDB_ROOT_USERNAME=docdb_admin -e MONGO_INITDB_ROOT_PASSWORD=docdb_admin_password -e MONGO_INITDB_DATABASE=clientesdb -p 27017:27017 mongo:latest
-docker run -d --name microservice_cliente --network app-network -p 3001:3001 microservice_cliente:latest
-
-# Microserviço de Produtos
-cd microservice_produtos
-docker build -t microservice_produto:latest .
-docker run -d --name mongodb-produto --network app-network -e MONGO_INITDB_ROOT_USERNAME=docdb_admin -e MONGO_INITDB_ROOT_PASSWORD=docdb_admin_password -e MONGO_INITDB_DATABASE=produtodb -p 27018:27017 mongo:latest
-docker run -d --name microservice_produto --network app-network -p 3002:3002 microservice_produto:latest
-
-# Microserviço de Vendas
-cd microservice_venda
-docker build -t microservice_venda:latest .
-docker run -d --name mongodb-venda --network app-network -e MONGO_INITDB_ROOT_USERNAME=docdb_admin -e MONGO_INITDB_ROOT_PASSWORD=docdb_admin_password -e MONGO_INITDB_DATABASE=vendasdb -p 27019:27017 mongo:latest
-docker run -d --name microservice_venda --network app-network -p 3003:3003 microservice_venda:latest
-```
-
-### Usando Kubernetes (Desenvolvimento Local)
-
-```bash
-# Criar namespaces
-kubectl create namespace microservice-cliente
-kubectl create namespace microservice-produto
-kubectl create namespace microservice-venda
-
-# Deployment Microserviço Cliente
-kubectl apply -f k8s/clientemongodbdeploy.yaml
-kubectl apply -f k8s/clientemongodbdeployservice.yaml
-kubectl apply -f k8s/clientedeployment.yaml
-kubectl apply -f k8s/clientedeploymentservice.yaml
-kubectl apply -f k8s/clientehpa.yaml
-
-# Deployment Microserviço Produto
-kubectl apply -f k8s/produtomongodbdeploy.yaml
-kubectl apply -f k8s/produtomongodbdeployservice.yaml
-kubectl apply -f k8s/produtodeployment.yaml
-kubectl apply -f k8s/produtodeploymentservice.yaml
-kubectl apply -f k8s/produtohpa.yaml
-
-# Deployment Microserviço Venda
-kubectl apply -f k8s/vendamongodbdeploy.yaml
-kubectl apply -f k8s/vendamongodbdeployservice.yaml
-kubectl apply -f k8s/vendadeployment.yaml
-kubectl apply -f k8s/vendadeploymentservice.yaml
-kubectl apply -f k8s/vendahpa.yaml
-```
-
 ## Documentação das APIs
 
 ### Microserviço de Clientes (porta 3001)
