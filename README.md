@@ -1,5 +1,9 @@
 # Tech Challenge Fase 5 Hakaton - App Concessionária
 
+## Aluno: Carlos Eduardo Lopes - rm356318
+
+## Software Architecture - Pós Tech - 7SOAT
+
 Este é um sistema de gerenciamento de pedidos para uma concessionária de veículos, desenvolvido como projeto de arquitetura de microserviços. 
 
 ## Visão Geral
