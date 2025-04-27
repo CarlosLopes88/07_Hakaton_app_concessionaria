@@ -6,6 +6,8 @@ Este é um sistema de gerenciamento de pedidos para uma concessionária de veíc
 
 O sistema é composto por três microserviços (Clientes, Produtos e Vendas) implementando os princípios da Clean Architecture. A aplicação oferece segurança avançada para dados de clientes através de pseudoanonimização e tokenização. O sistema utiliza o padrão SAGA para coordenação de transações distribuídas entre os microserviços, utilizando infraestrutura escalável na AWS com serviços como EKS (Kubernetes), API Gateway, DocumentDB e Cognito.
 
+- **Video Youtube**: [Link Video](https://youtu.be/nTU8_yHrP1Y)
+
 ## Repositórios
 
 Você pode acessar os repositórios do projeto nos seguintes links:
