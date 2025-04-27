@@ -1,0 +1,648 @@
+{
+	"info": {
+		"_postman_id": "6ad5f532-d868-40a1-a642-34955585dc7b",
+		"name": "app_concessionaria k8s",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33962694"
+	},
+	"item": [
+		{
+			"name": "ms_cliente",
+			"item": [
+				{
+					"name": "novo_cliente",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"12345678909\",\r\n    \"nomeCliente\": \"Cliente Teste\",\r\n    \"email\": \"seu.email@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30001/api/cliente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30001",
+							"path": [
+								"api",
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consulta_cliente_id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30001/api/cliente/om_Ok4lam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30001",
+							"path": [
+								"api",
+								"cliente",
+								"om_Ok4lam"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consulta_lista_cliente",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30001/api/cliente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30001",
+							"path": [
+								"api",
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ms_produto",
+			"item": [
+				{
+					"name": "novo_veiculo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"marca\": \"Toyota\",\r\n        \"modelo\": \"Corolla\",\r\n        \"ano\": \"2023\",\r\n        \"cor\": \"Prata\",\r\n        \"placa\": \"ABC1234\",\r\n        \"preco\": 120000.00\r\n    },\r\n    {\r\n        \"marca\": \"Honda\",\r\n        \"modelo\": \"Civic\",\r\n        \"ano\": \"2023\",\r\n        \"cor\": \"Preto\",\r\n        \"placa\": \"XYZ5678\",\r\n        \"preco\": 110000.00\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30002/api/produto",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30002",
+							"path": [
+								"api",
+								"produto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consulta_lista_veiculo",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30002/api/produto",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30002",
+							"path": [
+								"api",
+								"produto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consulta_veiculo_id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30002/api/produto/XY11cMhit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30002",
+							"path": [
+								"api",
+								"produto",
+								"XY11cMhit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualiza_veiculo_id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"Reservado\",\r\n    \"reserva\": {\r\n      \"clienteId\": \"xj8J1629q\",\r\n      \"dataReserva\": \"2025-04-19T19:02:55.607Z\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30002/api/produto/rff61W-nN",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30002",
+							"path": [
+								"api",
+								"produto",
+								"rff61W-nN"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consulta_lista_marca",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30002/api/produto/marca/Toyota",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30002",
+							"path": [
+								"api",
+								"produto",
+								"marca",
+								"Toyota"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consulta_lista_modelo",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30002/api/produto/modelo/Corolla",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30002",
+							"path": [
+								"api",
+								"produto",
+								"modelo",
+								"Corolla"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consulta_lista_ano",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30002/api/produto/ano/2023",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30002",
+							"path": [
+								"api",
+								"produto",
+								"ano",
+								"2023"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consulta_veiculo_placa",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30002/api/produto/placa/ABC1234",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30002",
+							"path": [
+								"api",
+								"produto",
+								"placa",
+								"ABC1234"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consulta_lista_cor",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30002/api/produto/cor/Prata",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30002",
+							"path": [
+								"api",
+								"produto",
+								"cor",
+								"Prata"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_veiculo_id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30002/api/produto/xLpyLyvGS",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30002",
+							"path": [
+								"api",
+								"produto",
+								"xLpyLyvGS"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ms_venda",
+			"item": [
+				{
+					"name": "novo_pedido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cliente\": \"om_Ok4lam\",\r\n    \"veiculoId\": \"FOMA8dM5R\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30003/api/pedido",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30003",
+							"path": [
+								"api",
+								"pedido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consulta_lista_pedidos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30003/api/pedido",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30003",
+							"path": [
+								"api",
+								"pedido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consulta_pedido_id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30003/api/pedido/i7qw3EtUd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30003",
+							"path": [
+								"api",
+								"pedido",
+								"i7qw3EtUd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pedido_pagamento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30003/api/pagamento/i7qw3EtUd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30003",
+							"path": [
+								"api",
+								"pagamento",
+								"i7qw3EtUd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "webhook_status_pagamento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30003/api/webhook/simulacao/maswqAlrs/Aprovado",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30003",
+							"path": [
+								"api",
+								"webhook",
+								"simulacao",
+								"maswqAlrs",
+								"Aprovado"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancelamento_pedido",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"novoStatus\": \"Cancelado\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30003/api/pedido/TomZXp5lU/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30003",
+							"path": [
+								"api",
+								"pedido",
+								"TomZXp5lU",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
